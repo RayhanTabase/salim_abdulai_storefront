@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&family=Roboto:wght@700&display=swap');
+
+
+header {
+  height: 5rem;
+  background: rgba(255, 255, 255, 1);
+  padding-left: 6.313rem;
+  padding-right: 6.313rem;
+  font-family: 'Raleway', sans-serif;
+  display: flex;
+  align-items: center;
+}
+
+header p {
+  margin: 0;
+}
+
+nav {
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: rgba(29, 31, 34, 1);
+  font-family: 'Raleway', sans-serif;
+  font-size: 1em;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.2rem;
+  text-transform: uppercase;
+}
+
+.navLinks {
+  gap: 2rem;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.8rem;
+  height: 100%;
+}
+
+.nav-link .nav-btn {
+  width: 100%;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.nav-link:hover {
+  background: #ebebeb59;
+}
+
+.nav-link::after {
+  content: '';
+  border-bottom: 3px solid rgb(0, 0, 0, 0);
+  margin-left:  -1rem;
+  margin-right:  -1rem;
+}
+
+.active-link .nav-btn {
+  color: rgba(94, 206, 123, 1);
+}
+
+.active-link::after {
+  border-bottom: 3px solid rgba(94, 206, 123, 1);
+}
+
+.logo {
+  width: 2.563rem;
+  height: 2.563rem;
+  position: absolute;
+  left: 50%;
+}
+
+header .actions {
+  position: absolute;
+  right: 0;
+  align-items: center;
+  padding-right: 4.875rem;
+  font-weight: 500;
+  width: 7.125rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+header .actions .currencySwitcher{
+  display: flex;
+  gap: 0.625rem;
+  font-size: 1.125em;
+}
+
+header .actions .shopping-cart .cart-items-number {
+  position: absolute;
+  top: -0.6rem;
+  margin-left: 0.7rem;
+}
+
+.bullet {
+  background: rgba(29, 31, 34, 1);
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.875em;
+  font-family: 'Roboto', sans-serif;
+}
+
+.currency-options {
+  position: absolute;
+  top: 0;
+  margin-top: 2.5rem;
+  width: 9rem;
+  left: -2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0 3px 3px 3px #f6f6f7 ;
+  z-index: 500;
+}
+
+.currency-option-display {
+  width: 100%;
+  height: 2.813rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  z-index: 500;
+}
+
+.currency-option-display:hover {
+  background: #eee;
+}
