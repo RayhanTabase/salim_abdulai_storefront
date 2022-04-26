@@ -1,0 +1,2 @@
+export const CHANGE_PRODUCT = 'CHANGE_PRODUCT';
+export const SHOW_MINICART = 'SHOW_MINICART';
