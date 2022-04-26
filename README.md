@@ -5,9 +5,6 @@
 ## Snapshots
 ![preview](./snapshots/pl.jpeg)
 ![preview](./snapshots/desc1.jpeg)
-![preview](./snapshots/desc2.jpeg)
-![preview](./snapshots/cart.jpeg)
-![preview](./snapshots/overlay.jpeg)
 
 
 ## Built With
