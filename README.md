@@ -64,7 +64,7 @@ You should now have the project running locally on a dev server.
 
 ## Acknowledgments
 
-This app was developed by specifications and design provided by [Scandiweb]('https://scandiweb.com')
+This app was developed by specifications and design provided by  [Scandiweb]('https://scandiweb.com')
 
 ## 🤝 Contributing
 
