@@ -129,6 +129,7 @@ hr {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+  object-fit: contain;
 }
 
 .cart-page-full .cart-product-card .section2 .qty button {

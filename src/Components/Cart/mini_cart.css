@@ -10,7 +10,7 @@
   width: 20.313rem;
   height: 35rem;
   max-height: 35rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: 100;
   padding-top: 2rem;
   padding-left: 1rem;
@@ -149,6 +149,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+  object-fit: contain;
 }
 
 .display-mini-cart .cart-product-card .section2 .qty button {

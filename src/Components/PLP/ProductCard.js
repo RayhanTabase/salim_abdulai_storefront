@@ -139,7 +139,6 @@ class ProductCard extends Component {
       price = prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
     const imageSource = gallery[0];
-    console.log(isInCart)
     return (
         <div className={`product-card  ${!inStock && 'fade-content'}`}>
         {
