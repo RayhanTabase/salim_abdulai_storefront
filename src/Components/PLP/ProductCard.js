@@ -13,7 +13,7 @@ class ProductCard extends Component {
     super(props)  
     this.state={
       selectedAttributes: {},
-      showAttributesPopUp: false
+      showAttributesPopUp: false,
     };
   }
 
@@ -25,6 +25,52 @@ class ProductCard extends Component {
         [id] : value
       }
     }));
+  }
+
+  checkAttrubutesSelected = () => {
+    const { attributes } = this.props.product;
+    if (attributes.length !== Object.keys(this.state.selectedAttributes).length) return false;
+    return true;
+  }
+
+  triggerAttributesPopUp = () => {
+    const { attributes } = this.props.product;
+    if (attributes.length === 0) this.addToCart();
+    else {
+      this.setState((prevState) => ({
+        ...prevState,
+        showAttributesPopUp: true,
+        selectedAttributes: {}
+      }));
+    }
+  }
+
+  closeAttributesPopUp = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      showAttributesPopUp: false
+    }));
+  }
+
+  addToCart = () => {
+    //check attributes selected
+    if ( !this.checkAttrubutesSelected()) {
+      return;
+    }
+    const productId = this.props.product.id;
+    const { cartReducer } = store.getState();
+    const { cart } = cartReducer;
+    let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === productId);
+    if (item !== undefined) {
+      this.closeAttributesPopUp();
+      return;
+    }
+    store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
+    this.closeAttributesPopUp();
+  }
+  
+  changeProductPage = () =>{
+    store.dispatch(change_product(this.props.product.id));
   }
 
   showAttributesPopUp = () => {
@@ -62,7 +108,7 @@ class ProductCard extends Component {
 
           <div className="d-flex action-btns">
             <button
-              className="add-btn"
+              className={`${this.checkAttrubutesSelected() ? "add-btn" : "disabled-btn"}`}
               onClick={this.addToCart}
             >
               Add
@@ -80,66 +126,20 @@ class ProductCard extends Component {
     )
   }
 
-  checkAttrubutesSelected = () => {
-    const { attributes } = this.props.product;
-    if (attributes.length !== Object.keys(this.state.selectedAttributes).length) return false;
-    return true;
-  }
-
-  triggerAttributesPopUp = () => {
-    const { attributes } = this.props.product;
-    if (attributes.length === 0) this.addToCart();
-    else {
-      this.setState((prevState) => ({
-        ...prevState,
-        showAttributesPopUp: true,
-        selectedAttributes: {}
-      }));
-    }
-  }
-
-  closeAttributesPopUp = () => {
-    this.setState((prevState) => ({
-      ...prevState,
-      showAttributesPopUp: false
-    }));
-  }
-
-
-  addToCart = () => {
-    //check attributes selected
-    if ( !this.checkAttrubutesSelected()) {
-      return;
-    }
-    const productId = this.props.product.id;
-    const { cartReducer } = store.getState();
-    const { cart } = cartReducer;
-    let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === productId);
-    if (item !== undefined) {
-      // already in cart message
-      alert('This item is already in the cart');
-      this.closeAttributesPopUp();
-      return;
-    }
-    store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
-    // success message
-    alert(`Successfully added ${this.props.product.name} to cart`);
-    this.closeAttributesPopUp();
-  }
-  
-  changeProductPage = () =>{
-    store.dispatch(change_product(this.props.product.id));
-  }
-
   displayProduct = () =>{
-    const { name, prices, gallery, inStock } = this.props.product;
+    const { name, prices, gallery, inStock, id } = this.props.product;
     let price = prices[0];
-    const { currencyReducer } = store.getState();
+    const { currencyReducer, cartReducer } = store.getState();
+    const { cart } = cartReducer;
+    let isInCart = false;
+    let item = cart.find((item) => item.id === id);
+    if (item !== undefined) isInCart = true;
     const { currencyType:selectedCurrency } = currencyReducer;
     if (selectedCurrency) {
       price = prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
     const imageSource = gallery[0];
+    console.log(isInCart)
     return (
         <div className={`product-card  ${!inStock && 'fade-content'}`}>
         {
@@ -150,15 +150,20 @@ class ProductCard extends Component {
             </p>
           </div>
         }
+
+        {
+          isInCart === false && inStock  &&
+          <div className="product-inCart">
+            <button
+              className="btn-colorless"
+              onClick={this.triggerAttributesPopUp}
+            >
+              <img src={addToCartIcon} alt="add to cart" loading="lazy" />
+            </button>
+          </div>
+
+        }
         
-        <div className="product-inCart">
-          <button
-            className="btn-colorless"
-            onClick={this.triggerAttributesPopUp}
-          >
-            <img src={addToCartIcon} alt="add to cart" loading="lazy" />
-          </button>
-        </div>
         <NavLink
           to = {`/description/`}
           onClick={this.changeProductPage}

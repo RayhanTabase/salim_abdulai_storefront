@@ -24,8 +24,8 @@ class App extends Component {
   }
 
   componentDidUpdate = () => {
-    const { navigationReducer } = store.getState();
-    const { showMiniCart } = navigationReducer;
+    const { showMiniCartReducer } = store.getState();
+    const { showMiniCart } = showMiniCartReducer;
     if (this.state.showMiniCart !== showMiniCart) {
       this.setState((prevState) => ({
         ...prevState,

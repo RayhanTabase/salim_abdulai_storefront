@@ -4,16 +4,22 @@ import { getItem } from '../../Apollo';
 import store from '../../redux/configureStore';
 import DisplayText from '../PDP/DisplayText';
 import DisplaySwatch from '../PDP/DisplaySwatch';
-import { add_quantity, decrease_quantity, remove_from_cart } from '../../redux/shopping_cart/actions';
+import { add_quantity, decrease_quantity, remove_from_cart, add_to_cart } from '../../redux/shopping_cart/actions';
 
 class CartProduct extends Component {
   constructor(props){
     super(props)  
     this.state={
       total: 0,
-      selectedAttributes: {},
-      imageSourceNumber:0
+      imageSourceNumber:0,
     };
+  }
+
+  addAttribute = (id, value) => {
+    console.log(id, value);
+    let selectedAttributes = this.props.product.attributes;
+    selectedAttributes[id] = value;
+    store.dispatch(add_to_cart({id: this.props.product.id, attributes: selectedAttributes, quantity: this.props.product.quantity}));
   }
 
   getTotalPrice = () => {
@@ -59,9 +65,7 @@ class CartProduct extends Component {
 
   reduceQuantity = () => {
     if (this.props.product.quantity - 1 < 1) {
-      if (window.confirm('Are you sure you want to delete item from cart?')) {
-        store.dispatch(remove_from_cart({id: this.props.product.id, attributes: this.props.product.attributes, quantity: this.props.product.quantity}));
-      }
+      store.dispatch(remove_from_cart({id: this.props.product.id, attributes: this.props.product.attributes, quantity: this.props.product.quantity}));
     } else {
       store.dispatch(decrease_quantity({id: this.props.product.id, attributes: this.props.product.attributes, quantity: this.props.product.quantity}));
     }
@@ -132,6 +136,7 @@ class CartProduct extends Component {
                     key={attribute.name}
                     attribute={attribute}
                     selectedAttributes={selectedAttributes}
+                    addAttribute={this.addAttribute}
                     cartPage={true}
                   />
                 )
@@ -141,6 +146,7 @@ class CartProduct extends Component {
                     key={attribute.name}
                     attribute={attribute}
                     selectedAttributes={selectedAttributes}
+                    addAttribute={this.addAttribute}
                     cartPage={true}
                   />
                 )
@@ -176,20 +182,24 @@ class CartProduct extends Component {
               </div>
             }
             <img src={imageSource} alt={name} loading="lazy" />
-            <div className="changeImageBtns">
-              <button
-                type="button"
-                onClick={() => this.changeImage(-1)}
-              >
-                {'<'}
-              </button>
-              <button
-                type="button"
-                onClick={() => this.changeImage(1)}
-              >
-                {'>'} 
-              </button>
-            </div>
+            {
+              gallery.length > 1 &&
+
+              <div className="changeImageBtns">
+                <button
+                  type="button"
+                  onClick={() => this.changeImage(-1)}
+                >
+                  {'<'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => this.changeImage(1)}
+                >
+                  {'>'} 
+                </button>
+              </div>
+            }
           </div>
         </div>
       </div>

@@ -16,22 +16,13 @@ class DisplayText extends Component {
         <div
           key={item.value}
         >
-        {
-          this.props.cartPage === true ?
-            <div
-              className={`attribute-value-text ${isSelected && 'attribute-selected-text'}`}
-            >
-              {item.value}
-            </div>
-          :
-           <button
-              className={`attribute-value-text ${isSelected && 'attribute-selected-text'}`}
-              type="button"
-              onClick={() => this.props.addAttribute(this.props.attribute.id, item.value)}
-            >
-              {item.value}
-            </button>
-        }
+          <button
+            className={`attribute-value-text ${isSelected && 'attribute-selected-text'}`}
+            type="button"
+            onClick={() => this.props.addAttribute(this.props.attribute.id, item.value)}
+          >
+            {item.value}
+          </button>
         </div>
       )
     })

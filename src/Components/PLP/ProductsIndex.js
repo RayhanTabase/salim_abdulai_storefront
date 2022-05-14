@@ -54,21 +54,6 @@ class ProductsIndex extends Component {
         <div className="category-products">
           { this.displayProducts() }
         </div>
-        <div className="pagnition">
-          <button
-            type="button"
-            onClick={() => this.changePage(-1)}
-          >
-            Prev
-          </button>
-          <p>{this.state.pageNumber}</p>
-          <button
-            type="button"
-            onClick={() => this.changePage(1)}
-          >
-            Next
-          </button>
-        </div>
       </>
     )
   }

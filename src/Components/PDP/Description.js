@@ -6,6 +6,7 @@ import DisplayText from './DisplayText';
 import DisplaySwatch from './DisplaySwatch';
 import store from '../../redux/configureStore';
 import { add_to_cart } from '../../redux/shopping_cart/actions';
+import ProductDescription from './ProductDescription';
 
 class Description extends Component {
   constructor(props){
@@ -13,7 +14,21 @@ class Description extends Component {
     this.state={
       selectedImage : null,
       selectedAttributes: {},
+      canSubmit: false
     };
+  }
+
+  componentDidMount = () => {
+    const { cartReducer, navigationReducer } = store.getState();
+    const { productId } = navigationReducer;
+    const { cart } = cartReducer;
+    const product = cart.find((product) => product.id === productId)
+    if (product !== undefined) {
+      this.setState((prevState) => ({
+        ...prevState,
+        selectedAttributes: product.attributes
+      }));
+    }
   }
 
   addAttribute = (id, value) => {
@@ -44,24 +59,12 @@ class Description extends Component {
   addToCart = () => {
     //check attributes selected
     if ( !this.checkAttrubutesSelected()) {
-      // error message, select all attributes
-      alert('Please make a selection for all product attributes');
       return;
     }
     const data = this.props.data;
     if (data.loading) return;
     const productId = data.product.id;
-    const { cartReducer } = store.getState();
-    const { cart } = cartReducer;
-    let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === this.props.productId);
-    if (item !== undefined) {
-      // already in cart message
-      alert('This item is already in the cart');
-      return;
-    }
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
-    // success message
-    alert(`Successfully added ${data.product.name} to cart`);
   }
 
   loadDescription = () => {
@@ -74,6 +77,9 @@ class Description extends Component {
     if (selectedCurrency !== null) {
       price = product.prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
+    
+    let descriptionSection = document.createElement('div');
+    descriptionSection.innerHTML = product.description
     return (
       <>
         <div className="product-thumbnails">
@@ -142,16 +148,28 @@ class Description extends Component {
               </span>
             </span>
           </p>
-          
-          <button
-            type="button"
-            className="add-toCart-btn"
-            onClick={this.addToCart}
-          >
-            ADD TO CART
-          </button>
-         
-          <div className="product-information" dangerouslySetInnerHTML={{__html: `${product.description}`}} />
+
+          {
+            product.inStock ?
+            <button
+              type="button"
+              className="add-toCart-btn"
+              onClick={this.addToCart}
+            >
+              ADD TO CART
+            </button>
+
+            :
+            <button
+              type="button"
+              className="disabled-btn"
+              disabled
+            >
+              OUT OF STOCK
+            </button>
+
+          }
+          <ProductDescription descriptionSection={descriptionSection} />
         </div>
       </>
     )

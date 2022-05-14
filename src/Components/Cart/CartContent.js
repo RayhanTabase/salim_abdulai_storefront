@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import { NavLink } from 'react-router-dom';
 import store from '../../redux/configureStore';
-import { show_minicart } from '../../redux/navigation/actions';
+import { show_minicart } from '../../redux/showMiniCart/actions';
 import CartProduct from './CartProduct';
 
 class CartPage extends Component {
@@ -53,10 +53,11 @@ class CartPage extends Component {
     const { cart } = cartReducer;
     return cart.map((product) => 
       <CartProduct
-        key={`${product.id} ${JSON.stringify(product)}`}
+        key={product.id}
         product={product}
         addToTotal={this.addToTotal}
         removeFromCart={this.removeFromCart}
+        page={this.props.page}
       />
     )
   }
