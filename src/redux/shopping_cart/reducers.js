@@ -7,12 +7,24 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      return {
-        ...state,
-        cart: [...state.cart.filter((product) =>
-          (product.id !== action.payload.id))
-        , action.payload],
-      };
+      const item = state.cart.find((product) => (product.id === action.payload.id))
+      if (item !== undefined) {
+        return {
+          ...state,
+          cart: [...state.cart.map((product) => {
+            if (product.id === action.payload.id) {
+              product = action.payload;
+            }
+            return product;
+          })
+          ],
+        };
+      } else {
+        return {
+          ...state,
+          cart: [...state.cart, action.payload]
+        };
+      }
 
     case REMOVE_FROM_CART:
       return {

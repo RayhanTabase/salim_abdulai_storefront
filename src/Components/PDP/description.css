@@ -16,7 +16,7 @@
   margin-right: 2.5rem;
   height: 28rem;
   max-height: 28rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: 5px;
 }
 
