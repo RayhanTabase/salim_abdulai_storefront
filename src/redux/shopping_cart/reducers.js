@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [...state.cart.filter((product) =>
-          (product.id !== action.payload.id ||  JSON.stringify(product.attributes) !== JSON.stringify(action.payload.attributes)))
+          (product.id !== action.payload.id))
         , action.payload],
       };
 
@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [...state.cart.filter((product) =>
-          (product.id !== action.payload.id ||  JSON.stringify(product.attributes) !== JSON.stringify(action.payload.attributes)))
+          (product.id !== action.payload.id))
         ],
       };
 
@@ -26,7 +26,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: state.cart.map((product) => {
-          if (JSON.stringify(product) === JSON.stringify(action.payload)) {
+          if (product.id === action.payload.id) {
             product.quantity += 1;
           }
           return product;
@@ -37,7 +37,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: state.cart.map((product) => {
-          if (JSON.stringify(product) === JSON.stringify(action.payload)) {
+          if (product.id === action.payload.id) {
             product.quantity -= 1;
           }
           return product;

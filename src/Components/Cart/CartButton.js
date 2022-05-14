@@ -1,9 +1,10 @@
 import React, { Component} from 'react';
 import store from '../../redux/configureStore';
-import { show_minicart } from '../../redux/navigation/actions';
+import { show_minicart } from '../../redux/showMiniCart/actions';
 import emptyCart from '../../assets/empty_cart.svg';
 import Cart from './Cart';
 import './mini_cart.css';
+import MiniCart from './MiniCart';
 
 class CartButton extends Component {
   
@@ -12,8 +13,8 @@ class CartButton extends Component {
   }
 
   render() {
-    const { navigationReducer } = store.getState();
-    const { showMiniCart } = navigationReducer;
+    const { showMiniCartReducer } = store.getState();
+    const { showMiniCart } = showMiniCartReducer;
     return (
       <>
         <button
@@ -25,9 +26,9 @@ class CartButton extends Component {
         </button>
         {
           showMiniCart &&
-            <div className="display-mini-cart">
+            <MiniCart>
               <Cart page="mini" />
-            </div>
+            </MiniCart>
         }
       </>
     )

@@ -35,6 +35,7 @@
   width: 100%;
   height : 21.125rem;
   margin-bottom: 1.313rem;
+  object-fit: contain;
 }
 
 .plp-content .category-products .product-card .product-name {

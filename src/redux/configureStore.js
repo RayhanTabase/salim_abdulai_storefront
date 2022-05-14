@@ -7,7 +7,7 @@ import cartReducer from './shopping_cart/reducers';
 import currencyReducer from './currency_type/reducers';
 import categoryReducer from './categorySelected/reducers';
 import navigationReducer from './navigation/reducers';
-
+import showMiniCartReducer from './showMiniCart/reducers';
 
 const persistConfig = {
   key: 'root',
@@ -19,7 +19,8 @@ const reducer = combineReducers({
   cartReducer,
   currencyReducer,
   categoryReducer,
-  navigationReducer
+  navigationReducer,
+  showMiniCartReducer
 });
 
 const rootReducer = persistReducer(persistConfig, reducer);

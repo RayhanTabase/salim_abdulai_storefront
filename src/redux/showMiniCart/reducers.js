@@ -1,15 +1,16 @@
-import { CHANGE_PRODUCT } from './constants';
+import { SHOW_MINICART } from './constants';
 
 const initialState = {
   productId: '',
+  showMiniCart: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGE_PRODUCT:
+    case SHOW_MINICART:
       return {
         ...state,
-        productId: action.payload
+        showMiniCart: !state.showMiniCart
       };
     default:
       return state;
