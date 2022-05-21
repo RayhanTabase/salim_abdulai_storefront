@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, ADD_QUANTITY, DECREASE_QUANTITY } from './constants';
+import { ADD_TO_CART, REMOVE_FROM_CART, ADD_QUANTITY, DECREASE_QUANTITY, CHANGE_ATTRIBUTE } from './constants';
 
 export const add_to_cart = (payload) => ({
   type: ADD_TO_CART,
@@ -17,5 +17,10 @@ export const add_quantity = (payload) => ({
 
 export const decrease_quantity = (payload) => ({
   type: DECREASE_QUANTITY,
+  payload,
+});
+
+export const change_attribute = (payload) => ({
+  type: CHANGE_ATTRIBUTE,
   payload,
 });

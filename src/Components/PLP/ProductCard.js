@@ -58,13 +58,13 @@ class ProductCard extends Component {
       return;
     }
     const productId = this.props.product.id;
-    const { cartReducer } = store.getState();
-    const { cart } = cartReducer;
-    let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === productId);
-    if (item !== undefined) {
-      this.closeAttributesPopUp();
-      return;
-    }
+    // const { cartReducer } = store.getState();
+    // const { cart } = cartReducer;
+    // let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === productId);
+    // if (item !== undefined) {
+    //   this.closeAttributesPopUp();
+    //   return;
+    // }
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
     this.closeAttributesPopUp();
   }
@@ -132,8 +132,9 @@ class ProductCard extends Component {
     const { currencyReducer, cartReducer } = store.getState();
     const { cart } = cartReducer;
     let isInCart = false;
-    let item = cart.find((item) => item.id === id);
+    let item = cart.find((item) => item.data.id === id);
     if (item !== undefined) isInCart = true;
+    console.log(cart)
     const { currencyType:selectedCurrency } = currencyReducer;
     if (selectedCurrency) {
       price = prices.find((price) => (price.currency.label === selectedCurrency.label));

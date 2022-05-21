@@ -49,7 +49,7 @@ class CartPage extends Component {
     const { cartReducer } = store.getState();
     const { cart } = cartReducer;
     cart.forEach((product) => {
-      count += product.quantity;
+      count += product.data.quantity;
     });
     return count;
   }

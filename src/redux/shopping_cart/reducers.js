@@ -1,4 +1,5 @@
-import { ADD_TO_CART, REMOVE_FROM_CART , ADD_QUANTITY, DECREASE_QUANTITY } from './constants';
+import { v4 as uuidv4 } from 'uuid';
+import { ADD_TO_CART, REMOVE_FROM_CART , ADD_QUANTITY, DECREASE_QUANTITY, CHANGE_ATTRIBUTE } from './constants';
 
 const initialState = {
   cart: [],
@@ -7,24 +8,30 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      const item = state.cart.find((product) => (product.id === action.payload.id))
-      if (item !== undefined) {
+      const product = state.cart.find((item) =>JSON.stringify(item.data) === JSON.stringify(action.payload))
+      if (product === undefined ) {
+        const newCartItem = {
+          id: uuidv4(),
+          data: action.payload
+        };
         return {
           ...state,
-          cart: [...state.cart.map((product) => {
-            if (product.id === action.payload.id) {
-              product = action.payload;
-            }
-            return product;
-          })
-          ],
+          cart: [...state.cart, newCartItem]
         };
       } else {
-        return {
-          ...state,
-          cart: [...state.cart, action.payload]
-        };
+        return state
       }
+
+    case CHANGE_ATTRIBUTE:
+      return {
+        ...state,
+        cart: state.cart.map((product) => {
+          if (product.id === action.payload.id) {
+            product.attributes = action.payload.attributes
+          }
+          return product;
+        }),
+      };
 
     case REMOVE_FROM_CART:
       return {
@@ -39,7 +46,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: state.cart.map((product) => {
           if (product.id === action.payload.id) {
-            product.quantity += 1;
+            product.data.quantity += 1;
           }
           return product;
         }),
@@ -49,13 +56,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: state.cart.map((product) => {
-          if (product.id === action.payload.id) {
-            product.quantity -= 1;
+          if (product.id === action.payload.id && product.data.quantity > 1) {
+            product.data.quantity -= 1;
           }
           return product;
         }),
       };
-
     default:
       return state;
   }

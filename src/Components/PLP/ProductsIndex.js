@@ -1,7 +1,6 @@
 import React, { Component} from 'react';
 import { graphql } from '@apollo/client/react/hoc';
 import { getProducts } from '../../Apollo';
-import store from '../../redux/configureStore';
 import ProductCard from './ProductCard';
 
 class ProductsIndex extends Component {
@@ -32,17 +31,12 @@ class ProductsIndex extends Component {
     if (!data.category) return;
     const { products } = data.category;
     const { pageNumber, displayNumber } = this.state;
-    const { cartReducer } = store.getState();
-    const { cart } = cartReducer;
     const pagProducts = products.slice((pageNumber - 1) * displayNumber, pageNumber * displayNumber);
     return pagProducts.map((product) => {
-      const productInCart = cart.find((cartProduct) => cartProduct.id === product.id );
-      const isInCart = productInCart === undefined ? false : true;
       return (
         <ProductCard
           key={product.id}
           product={product}
-          isInCart={isInCart}
         />
       )
     });

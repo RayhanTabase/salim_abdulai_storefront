@@ -16,18 +16,18 @@ class Description extends Component {
     };
   }
 
-  componentDidMount = () => {
-    const { cartReducer, navigationReducer } = store.getState();
-    const { productId } = navigationReducer;
-    const { cart } = cartReducer;
-    const product = cart.find((product) => product.id === productId)
-    if (product !== undefined) {
-      this.setState((prevState) => ({
-        ...prevState,
-        selectedAttributes: product.attributes
-      }));
-    }
-  }
+  // componentDidMount = () => {
+  //   const { cartReducer, navigationReducer } = store.getState();
+  //   const { productId } = navigationReducer;
+  //   const { cart } = cartReducer;
+  //   const product = cart.find((product) => product.id === productId)
+  //   if (product !== undefined) {
+  //     this.setState((prevState) => ({
+  //       ...prevState,
+  //       selectedAttributes: product.attributes
+  //     }));
+  //   }
+  // }
 
   addAttribute = (id, value) => {
     this.setState((prevState) => ({
@@ -47,9 +47,9 @@ class Description extends Component {
   }
 
   checkAttrubutesSelected = () => {
-    const data = this.props.data;
-    if (data.loading) return;
-    const attributes = data.product.attributes;
+    const { navigationReducer } = store.getState();
+    const { productData:product  } = navigationReducer;
+    const attributes = product.attributes;
     if (attributes.length !== Object.keys(this.state.selectedAttributes).length) return false;
     return true;
   }
@@ -59,9 +59,9 @@ class Description extends Component {
     if ( !this.checkAttrubutesSelected()) {
       return;
     }
-    const data = this.props.data;
-    if (data.loading) return;
-    const productId = data.product.id;
+    const { navigationReducer } = store.getState();
+    const { productData:product  } = navigationReducer;
+    const productId = product.id;
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
   }
 
