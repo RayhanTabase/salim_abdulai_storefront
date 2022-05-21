@@ -94,6 +94,10 @@ header .actions .currencySwitcher{
   font-size: 1.125em;
 }
 
+header .actions .currencySwitcher .currencySymbol {
+  font-size: 1em;
+}
+
 header .actions .shopping-cart .cart-items-number {
   position: absolute;
   top: -0.6rem;

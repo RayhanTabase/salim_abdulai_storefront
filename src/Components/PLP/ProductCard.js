@@ -70,7 +70,7 @@ class ProductCard extends Component {
   }
   
   changeProductPage = () =>{
-    store.dispatch(change_product(this.props.product.id));
+    store.dispatch(change_product(this.props.product));
   }
 
   showAttributesPopUp = () => {
@@ -127,7 +127,7 @@ class ProductCard extends Component {
   }
 
   displayProduct = () =>{
-    const { name, prices, gallery, inStock, id } = this.props.product;
+    const { name, prices, gallery, inStock, id, brand } = this.props.product;
     let price = prices[0];
     const { currencyReducer, cartReducer } = store.getState();
     const { cart } = cartReducer;
@@ -169,6 +169,7 @@ class ProductCard extends Component {
         >        
           <img src={imageSource} alt={name} className="product-image" loading="lazy" />
           <p className="product-name">
+            {brand}
             {name}
           </p>
           <p className="product-price d-flex">

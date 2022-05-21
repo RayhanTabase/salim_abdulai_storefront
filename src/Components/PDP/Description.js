@@ -1,6 +1,4 @@
 import React, { Component} from 'react';
-import { graphql } from '@apollo/client/react/hoc';
-import { getDescription } from '../../Apollo';
 import './description.css';
 import DisplayText from './DisplayText';
 import DisplaySwatch from './DisplaySwatch';
@@ -68,18 +66,14 @@ class Description extends Component {
   }
 
   loadDescription = () => {
-    const data = this.props.data;
-    if (data.loading) return '';
-    const product = data.product;
-    const { currencyReducer } = store.getState();
+    const { currencyReducer, navigationReducer } = store.getState();
+    const { productData:product  } = navigationReducer;
     const { currencyType:selectedCurrency } = currencyReducer;
     let price = product.prices[0];
     if (selectedCurrency !== null) {
       price = product.prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
-    
-    let descriptionSection = document.createElement('div');
-    descriptionSection.innerHTML = product.description
+
     return (
       <>
         <div className="product-thumbnails">
@@ -169,7 +163,7 @@ class Description extends Component {
             </button>
 
           }
-          <ProductDescription descriptionSection={descriptionSection} />
+          <ProductDescription html={product.description} />
         </div>
       </>
     )
@@ -184,14 +178,4 @@ class Description extends Component {
   }
 }
 
-export default graphql(getDescription, {
-  options: () => {
-    const { navigationReducer } = store.getState();
-    const { productId } = navigationReducer;
-    return {
-      variables: {
-        id: productId
-      },
-    }
-  }
-})(Description);
+export default Description;

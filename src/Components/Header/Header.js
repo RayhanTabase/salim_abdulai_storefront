@@ -75,9 +75,9 @@ class Header extends Component {
           <img src={brandLogo} alt="logo" className="logo"/>
           <ul className="actions">
             <li className="currencySwitcher d-flex">
-              <p>
+              <button className="btn-colorless displayCurrencyOptionsBtn currencySymbol" onClick={this.displayCurrencyDropDown} >
                 {this.state.selectedCurrency && this.state.selectedCurrency.symbol}
-              </p>
+              </button>
               <button type="button" className="btn-colorless displayCurrencyOptionsBtn" onClick={this.displayCurrencyDropDown}>
               {
                 this.state.showCurrencyPicker ?

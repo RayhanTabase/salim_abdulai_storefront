@@ -38,6 +38,12 @@ class CartPage extends Component {
     return total.toFixed(2);
   }
 
+  getTaxAmount = () => {
+    const total = this.getToTalCart();
+    const tax = total * 0.21;
+    return tax.toFixed(2)
+  }
+
   getCartTotalQuantity = () => {
     let count = 0;
     const { cartReducer } = store.getState();
@@ -91,11 +97,11 @@ class CartPage extends Component {
           <>
           <p className="tax">
             <span className="text">
-              Tax:
+              Tax: 
             </span>
             <span className="amount">
               {selectedCurrency && selectedCurrency.symbol}
-              0
+              {this.getTaxAmount()}
             </span>
           </p>
         

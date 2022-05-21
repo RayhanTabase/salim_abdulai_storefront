@@ -1,7 +1,7 @@
 import { CHANGE_PRODUCT } from './constants';
 
 const initialState = {
-  productId: '',
+  productData: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const reducer = (state = initialState, action) => {
     case CHANGE_PRODUCT:
       return {
         ...state,
-        productId: action.payload
+        productData: action.payload
       };
     default:
       return state;
