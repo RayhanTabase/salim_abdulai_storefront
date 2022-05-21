@@ -29,6 +29,8 @@ class ChangeCurrencyMenu extends Component {
       <CurrencyPicker
         key={currency.symbol}
         currency={currency}
+        closeMenu={this.props.closeMenu}
+        showCurrencyPicker={this.props.showCurrencyPicker}
       />
     ));
   }
