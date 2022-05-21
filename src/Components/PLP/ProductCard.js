@@ -58,13 +58,6 @@ class ProductCard extends Component {
       return;
     }
     const productId = this.props.product.id;
-    // const { cartReducer } = store.getState();
-    // const { cart } = cartReducer;
-    // let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === productId);
-    // if (item !== undefined) {
-    //   this.closeAttributesPopUp();
-    //   return;
-    // }
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
     this.closeAttributesPopUp();
   }

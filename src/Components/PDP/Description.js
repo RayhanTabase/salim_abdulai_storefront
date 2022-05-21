@@ -16,19 +16,6 @@ class Description extends Component {
     };
   }
 
-  // componentDidMount = () => {
-  //   const { cartReducer, navigationReducer } = store.getState();
-  //   const { productId } = navigationReducer;
-  //   const { cart } = cartReducer;
-  //   const product = cart.find((product) => product.id === productId)
-  //   if (product !== undefined) {
-  //     this.setState((prevState) => ({
-  //       ...prevState,
-  //       selectedAttributes: product.attributes
-  //     }));
-  //   }
-  // }
-
   addAttribute = (id, value) => {
     this.setState((prevState) => ({
       ...prevState,
