@@ -10,14 +10,14 @@ class AppRoutes extends Component {
 
   render() {
     const { navigationReducer } = store.getState();
-    const { productId } = navigationReducer;
+    const { productData } = navigationReducer;
 
     return (
       <Suspense>
         <Routes>
           <Route path="/" element={<Category />} />
           {
-            productId !== '' &&
+            productData &&
             <Route exact path="/description" element={<Description />} />
           }
           <Route path="/cart" element={<Cart page="full" />} />

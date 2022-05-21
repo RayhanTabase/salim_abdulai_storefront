@@ -1,6 +1,4 @@
 import React, { Component} from 'react';
-import { graphql } from '@apollo/client/react/hoc';
-import { getDescription } from '../../Apollo';
 import './description.css';
 import DisplayText from './DisplayText';
 import DisplaySwatch from './DisplaySwatch';
@@ -16,19 +14,6 @@ class Description extends Component {
       selectedAttributes: {},
       canSubmit: false
     };
-  }
-
-  componentDidMount = () => {
-    const { cartReducer, navigationReducer } = store.getState();
-    const { productId } = navigationReducer;
-    const { cart } = cartReducer;
-    const product = cart.find((product) => product.id === productId)
-    if (product !== undefined) {
-      this.setState((prevState) => ({
-        ...prevState,
-        selectedAttributes: product.attributes
-      }));
-    }
   }
 
   addAttribute = (id, value) => {
@@ -49,9 +34,9 @@ class Description extends Component {
   }
 
   checkAttrubutesSelected = () => {
-    const data = this.props.data;
-    if (data.loading) return;
-    const attributes = data.product.attributes;
+    const { navigationReducer } = store.getState();
+    const { productData:product  } = navigationReducer;
+    const attributes = product.attributes;
     if (attributes.length !== Object.keys(this.state.selectedAttributes).length) return false;
     return true;
   }
@@ -61,25 +46,26 @@ class Description extends Component {
     if ( !this.checkAttrubutesSelected()) {
       return;
     }
-    const data = this.props.data;
-    if (data.loading) return;
-    const productId = data.product.id;
+    const { navigationReducer } = store.getState();
+    const { productData:product  } = navigationReducer;
+    const productId = product.id;
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
+    this.setState((prevState) => ({
+      ...prevState,
+      selectedAttributes: {}
+    }));
+
   }
 
   loadDescription = () => {
-    const data = this.props.data;
-    if (data.loading) return '';
-    const product = data.product;
-    const { currencyReducer } = store.getState();
+    const { currencyReducer, navigationReducer } = store.getState();
+    const { productData:product  } = navigationReducer;
     const { currencyType:selectedCurrency } = currencyReducer;
     let price = product.prices[0];
     if (selectedCurrency !== null) {
       price = product.prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
-    
-    let descriptionSection = document.createElement('div');
-    descriptionSection.innerHTML = product.description
+
     return (
       <>
         <div className="product-thumbnails">
@@ -169,7 +155,7 @@ class Description extends Component {
             </button>
 
           }
-          <ProductDescription descriptionSection={descriptionSection} />
+          <ProductDescription html={product.description} />
         </div>
       </>
     )
@@ -184,14 +170,4 @@ class Description extends Component {
   }
 }
 
-export default graphql(getDescription, {
-  options: () => {
-    const { navigationReducer } = store.getState();
-    const { productId } = navigationReducer;
-    return {
-      variables: {
-        id: productId
-      },
-    }
-  }
-})(Description);
+export default Description;

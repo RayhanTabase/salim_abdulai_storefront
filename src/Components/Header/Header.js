@@ -18,15 +18,15 @@ class Header extends Component {
         selectedCurrency : null,
         availableCurrencies: [],
         showCurrencyPicker: false,
-        cart: [],
     };
   }
 
   getCartTotalQuantity = () => {
-    const { cart } = this.state;
+    const { cartReducer } = store.getState();
+    const { cart } = cartReducer;
     let count = 0;
     cart.forEach((product) => {
-      count += product.quantity;
+      count += product.data.quantity;
     });
     return count;
   }
@@ -57,13 +57,11 @@ class Header extends Component {
 
   componentDidMount = () => {
     store.subscribe(() => {
-      const { currencyReducer, cartReducer } = store.getState();
+      const { currencyReducer } = store.getState();
       const { currencyType } = currencyReducer;
-      const { cart } = cartReducer;
       this.setState((prevState) => ({
         ...prevState,
         selectedCurrency: currencyType,
-        cart
       }));
     });
   }
@@ -75,9 +73,9 @@ class Header extends Component {
           <img src={brandLogo} alt="logo" className="logo"/>
           <ul className="actions">
             <li className="currencySwitcher d-flex">
-              <p>
+              <button className="btn-colorless displayCurrencyOptionsBtn currencySymbol" onClick={this.displayCurrencyDropDown} >
                 {this.state.selectedCurrency && this.state.selectedCurrency.symbol}
-              </p>
+              </button>
               <button type="button" className="btn-colorless displayCurrencyOptionsBtn" onClick={this.displayCurrencyDropDown}>
               {
                 this.state.showCurrencyPicker ?

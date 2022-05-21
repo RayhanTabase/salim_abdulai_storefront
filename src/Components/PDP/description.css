@@ -20,12 +20,6 @@
   scrollbar-width: 5px;
 }
 
-/* .product-description .product-thumbnails::-webkit-scrollbar {
-  width: 4px;
-  background: grey;
-  border: 2px solid rebeccapurple;
-} */
-
 .product-description .product-thumbnails img {
   width: 4.938rem;
   max-width: 4.938rem;
@@ -129,4 +123,8 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 159.96%;
+}
+
+.product-information ul {
+  list-style: disc;
 }

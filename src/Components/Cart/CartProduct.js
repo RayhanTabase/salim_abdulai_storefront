@@ -4,7 +4,7 @@ import { getItem } from '../../Apollo';
 import store from '../../redux/configureStore';
 import DisplayText from '../PDP/DisplayText';
 import DisplaySwatch from '../PDP/DisplaySwatch';
-import { add_quantity, decrease_quantity, remove_from_cart, add_to_cart } from '../../redux/shopping_cart/actions';
+import { add_quantity, decrease_quantity, remove_from_cart, change_attribute } from '../../redux/shopping_cart/actions';
 
 class CartProduct extends Component {
   constructor(props){
@@ -16,10 +16,9 @@ class CartProduct extends Component {
   }
 
   addAttribute = (id, value) => {
-    console.log(id, value);
-    let selectedAttributes = this.props.product.attributes;
+    let selectedAttributes = this.props.product.data.attributes;
     selectedAttributes[id] = value;
-    store.dispatch(add_to_cart({id: this.props.product.id, attributes: selectedAttributes, quantity: this.props.product.quantity}));
+    store.dispatch(change_attribute({id: this.props.product.id, attributes: selectedAttributes}));
   }
 
   getTotalPrice = () => {
@@ -33,14 +32,14 @@ class CartProduct extends Component {
     if (selectedCurrency) {
       price = product.prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
-    const total = price.amount * this.props.product.quantity;
+    const total = price.amount * this.props.product.data.quantity;
     return total.toFixed(2);
   }
 
   updateTotal = () => {
     const newTotal = this.getTotalPrice();
     if (newTotal === this.state.total) return;
-    this.props.addToTotal(JSON.stringify(this.props.product.attributes) + `${this.props.product.id}` ,newTotal);
+    this.props.addToTotal(this.props.product.id ,newTotal);
     this.setState((prevState) => ({
       ...prevState,
       total: newTotal
@@ -52,7 +51,7 @@ class CartProduct extends Component {
   }
 
   componentWillUnmount = () => {
-    this.props.removeFromCart(JSON.stringify(this.props.product.attributes) + `${this.props.product.id}`);
+    this.props.removeFromCart(this.props.product.id);
   }
 
   componentDidUpdate = () => {
@@ -60,14 +59,14 @@ class CartProduct extends Component {
   }
 
   addQuantity = () => {
-    store.dispatch(add_quantity({id: this.props.product.id, attributes: this.props.product.attributes, quantity: this.props.product.quantity}));
+    store.dispatch(add_quantity({id: this.props.product.id}));
   }
 
   reduceQuantity = () => {
-    if (this.props.product.quantity - 1 < 1) {
-      store.dispatch(remove_from_cart({id: this.props.product.id, attributes: this.props.product.attributes, quantity: this.props.product.quantity}));
+    if (this.props.product.data.quantity === 1) {
+      store.dispatch(remove_from_cart({id: this.props.product.id}));
     } else {
-      store.dispatch(decrease_quantity({id: this.props.product.id, attributes: this.props.product.attributes, quantity: this.props.product.quantity}));
+      store.dispatch(decrease_quantity({id: this.props.product.id}));
     }
   }
 
@@ -108,8 +107,8 @@ class CartProduct extends Component {
     }
     const { name, brand, gallery, attributes, inStock } = product;
     const imageSource = gallery[this.state.imageSourceNumber];
-    const selectedAttributes = this.props.product.attributes;
-    const { quantity } = this.props.product;
+    const selectedAttributes = this.props.product.data.attributes;
+    const { quantity } = this.props.product.data;
 
     return (
       <div className="cart-product-card">
@@ -220,7 +219,7 @@ export default graphql(getItem, {
   options: (props) => {
     return {
       variables: {
-        id: props.product.id
+        id: props.product.data.id
       },
     }
   }

@@ -1,7 +1,6 @@
 import { SHOW_MINICART } from './constants';
 
 const initialState = {
-  productId: '',
   showMiniCart: false
 };
 

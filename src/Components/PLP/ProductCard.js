@@ -58,19 +58,12 @@ class ProductCard extends Component {
       return;
     }
     const productId = this.props.product.id;
-    const { cartReducer } = store.getState();
-    const { cart } = cartReducer;
-    let item = cart.find((item) => JSON.stringify(item.attributes) === JSON.stringify(this.state.selectedAttributes) && item.id === productId);
-    if (item !== undefined) {
-      this.closeAttributesPopUp();
-      return;
-    }
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
     this.closeAttributesPopUp();
   }
   
   changeProductPage = () =>{
-    store.dispatch(change_product(this.props.product.id));
+    store.dispatch(change_product(this.props.product));
   }
 
   showAttributesPopUp = () => {
@@ -127,13 +120,14 @@ class ProductCard extends Component {
   }
 
   displayProduct = () =>{
-    const { name, prices, gallery, inStock, id } = this.props.product;
+    const { name, prices, gallery, inStock, id, brand } = this.props.product;
     let price = prices[0];
     const { currencyReducer, cartReducer } = store.getState();
     const { cart } = cartReducer;
     let isInCart = false;
-    let item = cart.find((item) => item.id === id);
+    let item = cart.find((item) => item.data.id === id);
     if (item !== undefined) isInCart = true;
+    console.log(cart)
     const { currencyType:selectedCurrency } = currencyReducer;
     if (selectedCurrency) {
       price = prices.find((price) => (price.currency.label === selectedCurrency.label));
@@ -169,6 +163,7 @@ class ProductCard extends Component {
         >        
           <img src={imageSource} alt={name} className="product-image" loading="lazy" />
           <p className="product-name">
+            {brand}
             {name}
           </p>
           <p className="product-price d-flex">

@@ -5,6 +5,7 @@ import change_currency_type from '../../redux/currency_type/actions';
 class CurrencyPicker extends Component {
   changeCurrency = () => {
     store.dispatch(change_currency_type(this.props.currency));
+    if (this.props.showCurrencyPicker) this.props.closeMenu();
   }
 
   render() {

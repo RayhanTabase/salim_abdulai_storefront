@@ -1,21 +1,15 @@
 import React, { Component} from 'react';
+import sanitizeHtml from 'sanitize-html';
+import parse from 'html-react-parser';
 
 class ProductDescription extends Component {
-  constructor(props){
-    super(props)  
-    this.contentRef = React.createRef();
-  }
 
-  componentDidMount = () => {
-    this.contentRef.appendChild(this.props.descriptionSection);
-  }
 
   render() {
+    const sanitizedHtml = sanitizeHtml(this.props.html);
     return (
-      <div
-        ref={node => this.contentRef = node}
-        className="product-information"
-      >
+      <div className="product-information">
+         {parse(sanitizedHtml)}
       </div>
     )
   }
