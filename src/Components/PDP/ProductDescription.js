@@ -1,10 +1,13 @@
 import React, { Component} from 'react';
+import SanitizedHTML from 'react-sanitized-html';
 
 class ProductDescription extends Component {
 
   render() {
     return (
-      React.createElement('div', null, this.props.html.split('\n'))
+      <div className="product-information">
+        <SanitizedHTML html={ this.props.html } />
+      </div>
     )
   }
 }

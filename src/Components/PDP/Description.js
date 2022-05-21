@@ -50,6 +50,11 @@ class Description extends Component {
     const { productData:product  } = navigationReducer;
     const productId = product.id;
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
+    this.setState((prevState) => ({
+      ...prevState,
+      selectedAttributes: {}
+    }));
+
   }
 
   loadDescription = () => {

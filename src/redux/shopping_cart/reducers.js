@@ -8,7 +8,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      const product = state.cart.find((item) =>JSON.stringify(item.data) === JSON.stringify(action.payload))
+      const product = state.cart.find((item) => item.data.id === action.payload.id && JSON.stringify(item.data.attributes) === JSON.stringify(action.payload.attributes))
       if (product === undefined ) {
         const newCartItem = {
           id: uuidv4(),
@@ -27,7 +27,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: state.cart.map((product) => {
           if (product.id === action.payload.id) {
-            product.attributes = action.payload.attributes
+            product.data.attributes = action.payload.attributes
           }
           return product;
         }),

@@ -16,7 +16,6 @@ class CartProduct extends Component {
   }
 
   addAttribute = (id, value) => {
-    console.log(id, value);
     let selectedAttributes = this.props.product.data.attributes;
     selectedAttributes[id] = value;
     store.dispatch(change_attribute({id: this.props.product.id, attributes: selectedAttributes}));
