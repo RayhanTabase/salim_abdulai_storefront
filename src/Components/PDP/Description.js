@@ -1,10 +1,22 @@
 import React, { Component} from 'react';
+import { useParams } from 'react-router-dom';
 import './description.css';
 import DisplayText from './DisplayText';
 import DisplaySwatch from './DisplaySwatch';
 import store from '../../redux/configureStore';
 import { add_to_cart } from '../../redux/shopping_cart/actions';
 import ProductDescription from './ProductDescription';
+import { client, getItem } from '../../Apollo';
+
+const withRouter = WrappedComponent => props => {
+  const params = useParams()
+  return (
+    <WrappedComponent
+      {...props}
+      params={params}
+    />
+  );
+};
 
 class Description extends Component {
   constructor(props){
@@ -12,7 +24,8 @@ class Description extends Component {
     this.state={
       selectedImage : null,
       selectedAttributes: {},
-      canSubmit: false
+      canSubmit: false,
+      product: null
     };
   }
 
@@ -54,18 +67,43 @@ class Description extends Component {
       ...prevState,
       selectedAttributes: {}
     }));
-
   }
 
-  loadDescription = () => {
-    const { currencyReducer, navigationReducer } = store.getState();
-    const { productData:product  } = navigationReducer;
+  componentDidMount = async() => {
+    const { navigationReducer } = store.getState();
+    let { productData  } = navigationReducer;
+
+    if ( !productData || productData.id !== this.props.params.id ) {
+      try {
+        const response = await client.query({
+          query: getItem,
+          variables: {
+            id: this.props.params.id,
+          },
+        })
+        productData = response.data.product
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    this.setState((prevState) => ({
+      ...prevState,
+      product: productData
+    }));
+  }
+
+  displayDescription = () => {
+    const { product } = this.state;
+    
+    if (product === null) return;
+    
+    const { currencyReducer } = store.getState();
     const { currencyType:selectedCurrency } = currencyReducer;
     let price = product.prices[0];
     if (selectedCurrency !== null) {
       price = product.prices.find((price) => (price.currency.label === selectedCurrency.label));
     }
-
     return (
       <>
         <div className="product-thumbnails">
@@ -160,14 +198,15 @@ class Description extends Component {
       </>
     )
   }
+  
 
   render() {
     return (
       <div className="product-description d-flex">
-        {this.loadDescription()}
+        {this.displayDescription()}
       </div>
     )
   }
 }
 
-export default Description;
+export default withRouter(Description);

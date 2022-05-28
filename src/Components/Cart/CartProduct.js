@@ -1,10 +1,8 @@
 import React, { Component} from 'react';
-import { graphql } from '@apollo/client/react/hoc';
-import { getItem } from '../../Apollo';
 import store from '../../redux/configureStore';
 import DisplayText from '../PDP/DisplayText';
 import DisplaySwatch from '../PDP/DisplaySwatch';
-import { add_quantity, decrease_quantity, remove_from_cart, change_attribute } from '../../redux/shopping_cart/actions';
+import { add_quantity, decrease_quantity, remove_from_cart } from '../../redux/shopping_cart/actions';
 
 class CartProduct extends Component {
   constructor(props){
@@ -12,19 +10,14 @@ class CartProduct extends Component {
     this.state={
       total: 0,
       imageSourceNumber:0,
+      productData: null
     };
   }
 
-  addAttribute = (id, value) => {
-    let selectedAttributes = this.props.product.data.attributes;
-    selectedAttributes[id] = value;
-    store.dispatch(change_attribute({id: this.props.product.id, attributes: selectedAttributes}));
-  }
-
   getTotalPrice = () => {
-    const data = this.props.data;
-    if (data.loading) return 0;
-    const product = data.product;
+    const { productData:product } = this.state;
+    if (product === null) return
+
     if (!product.inStock) return 0;
     const { currencyReducer } = store.getState();
     const { currencyType:selectedCurrency } = currencyReducer;
@@ -46,8 +39,17 @@ class CartProduct extends Component {
     }));
   }
 
-  componentDidMount = () => {
+  componentDidMount = async() => {
     this.updateTotal();
+    const productData = await this.props.productData
+    this.setState((prevState) => ({
+      ...prevState,
+      productData: productData
+    }));
+  }
+
+  addAttribute = () => {
+    return
   }
 
   componentWillUnmount = () => {
@@ -71,9 +73,7 @@ class CartProduct extends Component {
   }
 
   changeImage = (num) => {
-    const data = this.props.data;
-    if (data.loading) return '';
-    const images = data.product.gallery;
+    const images = this.state.productData.gallery;
     let nextImageNumber = this.state.imageSourceNumber + num;
     if (nextImageNumber >= images.length) {
       this.setState((prevState) => ({
@@ -96,9 +96,8 @@ class CartProduct extends Component {
   }
 
   displayProduct = () => {
-    const data = this.props.data;
-    if (data.loading) return '';
-    const product = data.product;
+    const { productData:product } = this.state;
+    if (product === null) return
     const { currencyReducer } = store.getState();
     const { currencyType:selectedCurrency } = currencyReducer;
     let price = product.prices[0];
@@ -215,12 +214,4 @@ class CartProduct extends Component {
   }
 }
 
-export default graphql(getItem, {
-  options: (props) => {
-    return {
-      variables: {
-        id: props.product.data.id
-      },
-    }
-  }
-})(CartProduct);
+export default CartProduct;
