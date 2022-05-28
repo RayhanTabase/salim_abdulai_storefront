@@ -79,7 +79,7 @@ class CartPage extends Component {
     return cart.map((product) => {
       let productData = loadedProducts[product.data.id]
       if (productData === undefined) {
-        productData = this.loadProduct(product.data.id)
+        productData = Promise.resolve(this.loadProduct(product.data.id))
         loadedProducts[product.data.id] = productData;
       }
       return (
