@@ -19,7 +19,15 @@ const reducer = (state = initialState, action) => {
           cart: [...state.cart, newCartItem]
         };
       } else {
-        return state
+        return {
+          ...state,
+          cart: state.cart.map((product) => {
+            if (product.data.id === action.payload.id) {
+              product.data.quantity += 1;
+            }
+            return product;
+          }),
+        };
       }
 
     case CHANGE_ATTRIBUTE:

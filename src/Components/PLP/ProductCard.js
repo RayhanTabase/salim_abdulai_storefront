@@ -127,7 +127,6 @@ class ProductCard extends Component {
     let isInCart = false;
     let item = cart.find((item) => item.data.id === id);
     if (item !== undefined) isInCart = true;
-    console.log(cart)
     const { currencyType:selectedCurrency } = currencyReducer;
     if (selectedCurrency) {
       price = prices.find((price) => (price.currency.label === selectedCurrency.label));
@@ -158,7 +157,7 @@ class ProductCard extends Component {
         }
         
         <NavLink
-          to = {`/description/`}
+          to = {`/description/${id}`}
           onClick={this.changeProductPage}
         >        
           <img src={imageSource} alt={name} className="product-image" loading="lazy" />

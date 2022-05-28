@@ -161,3 +161,12 @@ button:hover {
   justify-content: center;
   align-items: center;
 }
+
+
+.center-text-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20rem;
+  font-size: 1.2em;
+}

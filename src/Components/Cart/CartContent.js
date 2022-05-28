@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import store from '../../redux/configureStore';
 import { show_minicart } from '../../redux/showMiniCart/actions';
 import CartProduct from './CartProduct';
+import { client, getItem } from '../../Apollo';
+
 
 class CartPage extends Component {
   constructor(props){
@@ -54,17 +56,43 @@ class CartPage extends Component {
     return count;
   }
 
+  loadProduct = async(id) => {
+    let productData = null
+    try {
+      const response = await client.query({
+        query: getItem,
+        variables: {
+          id,
+        },
+      })
+      productData = await response.data.product
+    } catch (err) {
+      console.log(err);
+    }
+    return productData
+  }
+
   displayCartProducts = () => {
     const { cartReducer } = store.getState();
     const { cart } = cartReducer;
-    return cart.map((product) => 
-      <CartProduct
-        key={product.id}
-        product={product}
-        addToTotal={this.addToTotal}
-        removeFromCart={this.removeFromCart}
-        page={this.props.page}
-      />
+    let loadedProducts = {}
+    return cart.map((product) => {
+      let productData = loadedProducts[product.data.id]
+      if (productData === undefined) {
+        productData = this.loadProduct(product.data.id)
+        loadedProducts[product.data.id] = productData;
+      }
+      return (
+        <CartProduct
+          key={product.id}
+          product={product}
+          productData={productData}
+          addToTotal={this.addToTotal}
+          removeFromCart={this.removeFromCart}
+          page={this.props.page}
+        />
+      )
+    }
     )
   }
  
