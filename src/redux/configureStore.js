@@ -12,7 +12,7 @@ import showMiniCartReducer from './showMiniCart/reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['cartReducer', 'currencyReducer', 'categoryReducer'],
+  whitelist: ['cartReducer', 'currencyReducer'],
 };
 
 const reducer = combineReducers({
