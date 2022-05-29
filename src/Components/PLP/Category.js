@@ -1,16 +1,30 @@
 import React, { Component} from 'react';
-import { graphql } from '@apollo/client/react/hoc';
+import { useParams } from 'react-router-dom';
 import './category_page.css';
 import ProductsIndex from './ProductsIndex';
-import { getCategories } from '../../Apollo';
 import store from '../../redux/configureStore';
+import change_category_type from '../../redux/categorySelected/actions';
 
+const withRouter = WrappedComponent => props => {
+  const params = useParams()
+  return (
+    <WrappedComponent
+      {...props}
+      params={params}
+    />
+  );
+};
 
 class Category extends Component {
 
   render() {
     const { categoryReducer } = store.getState();
-    const { categoryName } = categoryReducer;
+    let { categoryName } = categoryReducer;
+    if (this.props.params.categoryName && this.props.params.categoryName !== categoryName ) {
+      store.dispatch(change_category_type(this.props.params.categoryName));
+      categoryName = this.props.params.categoryName;
+    }
+    
     return (
       <div className="plp-content">
         <h2 className="page-header">
@@ -24,4 +38,4 @@ class Category extends Component {
   }
 }
 
-export default graphql(getCategories)(Category);
+export default withRouter(Category);

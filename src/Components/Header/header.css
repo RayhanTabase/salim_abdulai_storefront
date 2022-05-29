@@ -51,10 +51,6 @@ a {
   padding-left: 1rem;
 }
 
-.nav-link:hover {
-  background: #ebebeb59;
-}
-
 .nav-link::after {
   content: '';
   border-bottom: 3px solid rgb(0, 0, 0, 0);
