@@ -13,6 +13,7 @@ class AppRoutes extends Component {
       <Suspense>
         <Routes>
           <Route path="/" element={<Category />} />
+          <Route path="/category/:categoryName" element={<Category />} />
           <Route exact path="/description/:id" element={<Description />} />
           <Route path="/cart" element={<Cart page="full" />} />
           <Route path="/*" element={<NotFound />} />

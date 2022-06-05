@@ -47,8 +47,7 @@ class Description extends Component {
   }
 
   checkAttrubutesSelected = () => {
-    const { navigationReducer } = store.getState();
-    const { productData:product  } = navigationReducer;
+    const { product } = this.state;
     const attributes = product.attributes;
     if (attributes.length !== Object.keys(this.state.selectedAttributes).length) return false;
     return true;
@@ -59,8 +58,7 @@ class Description extends Component {
     if ( !this.checkAttrubutesSelected()) {
       return;
     }
-    const { navigationReducer } = store.getState();
-    const { productData:product  } = navigationReducer;
+    const { product } = this.state;
     const productId = product.id;
     store.dispatch(add_to_cart({id: productId, attributes: this.state.selectedAttributes, quantity:1 }));
     this.setState((prevState) => ({

@@ -18,7 +18,7 @@ class CategoryLink extends Component {
       >
       <NavLink
         onClick={()=> this.changeCategory(category.name)}
-        to="/"
+        to={`/category/${category.name}`}
         className="nav-btn"
       >
         {category.name}

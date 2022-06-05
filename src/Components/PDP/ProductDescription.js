@@ -6,6 +6,7 @@ class ProductDescription extends Component {
 
 
   render() {
+    console.log(this.props.html)
     const sanitizedHtml = sanitizeHtml(this.props.html);
     return (
       <div className="product-information">
