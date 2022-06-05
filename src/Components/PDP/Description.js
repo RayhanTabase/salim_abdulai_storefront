@@ -68,9 +68,8 @@ class Description extends Component {
   }
 
   componentDidMount = async() => {
-    // const { navigationReducer } = store.getState();
-    // let { productData  } = navigationReducer;
-    let productData = null
+    const { navigationReducer } = store.getState();
+    let { productData  } = navigationReducer;
 
     if ( !productData || productData.id !== this.props.params.id ) {
       try {
