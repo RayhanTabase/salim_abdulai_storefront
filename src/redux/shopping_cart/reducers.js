@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           cart: state.cart.map((product) => {
-            if (product.data.id === action.payload.id) {
+            if (product.data.id === action.payload.id && JSON.stringify(product.data.attributes) === JSON.stringify(action.payload.attributes)) {
               product.data.quantity += 1;
             }
             return product;
