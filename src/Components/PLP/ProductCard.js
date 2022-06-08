@@ -162,8 +162,12 @@ class ProductCard extends Component {
         >        
           <img src={imageSource} alt={name} className="product-image" loading="lazy" />
           <p className="product-name">
-            {brand}
-            {name}
+            <span>
+              {brand}
+            </span>
+            <span>
+              {name}
+            </span>
           </p>
           <p className="product-price d-flex">
             <span>
