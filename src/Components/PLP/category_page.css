@@ -44,6 +44,9 @@
   font-weight: 300;
   font-size: 18px;
   line-height: 160%;
+  display: flex;
+  column-gap: 0.4rem;
+  text-transform: capitalize;
 }
 
 .plp-content .category-products .product-card .product-price {

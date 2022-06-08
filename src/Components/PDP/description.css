@@ -117,7 +117,7 @@
   background: rgb(66, 158, 91);
 }
 
-.product-description .product-details .product-information p {
+.product-description .product-details .product-information {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 400;
